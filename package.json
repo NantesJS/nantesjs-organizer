@@ -1,0 +1,25 @@
+{
+  "name": "@nantesjs/organizer",
+  "version": "1.0.0",
+  "description": "NantesJS Organizer",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NantesJS/nantesjs-organizer.git"
+  },
+  "keywords": [
+    "nantesjs",
+    "organizer",
+    "event",
+    "meetup"
+  ],
+  "author": "Charles-Henri GUERIN",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NantesJS/nantesjs-organizer/issues"
+  },
+  "homepage": "https://github.com/NantesJS/nantesjs-organizer#readme"
+}
