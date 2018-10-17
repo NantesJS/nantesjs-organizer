@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/NantesJS/nantesjs-organizer/issues"
   },
-  "homepage": "https://github.com/NantesJS/nantesjs-organizer#readme"
+  "homepage": "https://github.com/NantesJS/nantesjs-organizer#readme",
+  "dependencies": {
+    "prompts": "^1.1.1"
+  }
 }
