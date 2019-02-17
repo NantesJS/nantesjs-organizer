@@ -11,7 +11,7 @@ const getShortNameByType = (array, type) => {
 
 exports.findPlaceInNantes = name =>( 
   googleMapsClient.findPlace({
-    input: 'Clever Age, Nantes',
+    input: `${name}, Nantes`,
     inputtype: 'textquery',
   }).asPromise()
     .then(getOr('', 'json.candidates[0].place_id'))
