@@ -1,7 +1,6 @@
 const handlebars = require('handlebars')
 
-exports.generateYaml = handlebars.compile(`
----
+exports.generateYaml = handlebars.compile(`---
 id: {{id}}
 status: next
 title: '{{title}}'
