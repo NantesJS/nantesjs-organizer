@@ -2,13 +2,15 @@
 
 # nantesjs-organizer
 
-## Docker version
+## Docker :whale:
 
-### Build image
+### Construit l'image
 
 ```sh
 docker build -t nantesjs-organizer .
 ```
+
+### Démarre le conteneur
 
 ```sh
 docker run -v "$PWD:/usr/local/nantesjs-organizer" -it nantesjs-organizer
