@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/NantesJS/nantesjs-organizer#readme",
   "dependencies": {
+    "@google/maps": "^0.5.5",
     "date-fns": "^1.30.1",
     "handlebars": "^4.1.0",
     "lodash": "^4.17.11",
