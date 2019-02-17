@@ -7,11 +7,11 @@
 ### Construit l'image
 
 ```sh
-docker build -t nantesjs-organizer .
+docker image build -t nantesjs-organizer .
 ```
 
 ### Démarre le conteneur
 
 ```sh
-docker run -v "$PWD:/usr/local/nantesjs-organizer" -it nantesjs-organizer
+docker container run -v "$PWD:/usr/local/nantesjs-organizer" -it nantesjs-organizer
 ```
