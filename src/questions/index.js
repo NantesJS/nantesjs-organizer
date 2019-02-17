@@ -3,6 +3,7 @@ const { basicQuestions } = require('./basic')
 const { getSponsorOrHostQuestions } = require('./sponsorOrHost')
 const { talkQuestions } = require('./talk')
 const { speakerQuestions } = require('./speaker')
+const { findPlaceInNantes } = require('../places')
 
 const getTalkWithSpeaker = async prompt => {
   const talk = await prompt(talkQuestions)
@@ -20,8 +21,9 @@ const getTalkWithSpeaker = async prompt => {
 
 exports.ask = async prompt => {
   const basics = await prompt(basicQuestions)
-  const venue = await prompt(getSponsorOrHostQuestions('sponsor'))
-  const sponsor = await prompt(getSponsorOrHostQuestions('hébergeur'))
+  const sponsor = await prompt(getSponsorOrHostQuestions('sponsor'))
+  const venue = await prompt(getSponsorOrHostQuestions('hébergeur'))
+  const place = await findPlaceInNantes(venue.name)
 
   const talks = [
     await getTalkWithSpeaker(prompt),
@@ -30,8 +32,10 @@ exports.ask = async prompt => {
 
   return {
     ...basics,
+    ...place,
     id: uuid(),
     venue: {
+      ...place,
       ...venue,
       id: uuid(),
     },

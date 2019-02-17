@@ -4,6 +4,7 @@
   "description": "NantesJS Organizer",
   "main": "index.js",
   "scripts": {
+    "start": "node -r dotenv/config src/index.js",
     "test": "jest"
   },
   "repository": {
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
+    "dotenv": "^6.2.0",
     "jest": "^24.1.0"
   }
 }
