@@ -30,6 +30,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "jest": "^24.1.0"
   }
 }
