@@ -1,5 +1,5 @@
 const isInteger = require('lodash/fp/isInteger')
-const { getThirdThursdayOfMonth, isValid, format } = require('../utils/date')
+const { getThirdThursdayOfMonth, isValid, format } = require('../date')
 
 exports.basicQuestions = [{
   type: 'number',
