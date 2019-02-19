@@ -11,5 +11,5 @@ ask()
   ]))
   .then(([filename, yaml]) => {
     writeFileSync(filename, yaml)
-    console.log(green(`🎉 Generated ${filename}`))
+    console.log(green(`🎉 Le meetup a été sauvé dans le fichier suivant : ${filename}`))
   })
