@@ -1,5 +1,6 @@
 const prompts = require('prompts')
 const uuid = require('uuid/v4')
+const { bold, red } = require('kleur')
 const { basicQuestions } = require('./basic')
 const { getSponsorOrHostQuestions } = require('./sponsorOrHost')
 const { talkQuestions } = require('./talk')
@@ -24,7 +25,10 @@ exports.ask = async () => {
   const basics = await prompts(basicQuestions)
   const venue = await prompts(getSponsorOrHostQuestions('sponsor'))
   const sponsor = await prompts(getSponsorOrHostQuestions('hébergeur'))
-  const place = await findPlaceInNantes(venue.name)
+  const place = await findPlaceInNantes(venue.name).catch(() => {
+    console.warn(bold().red('✖ La récupération des informations relatives au lieu de l\'évènement a été infructueuse.'))
+    console.warn(bold().red('✖ Tu vas devoir saisir ces informations toi-même... 😢'))
+  })
 
   const talks = [
     await getTalkWithSpeaker(),
