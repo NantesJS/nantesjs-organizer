@@ -59,3 +59,6 @@ typings/
 
 # next.js build output
 .next
+
+# Ignore les fichiers markdown générés par l'outil
+meetup-*.md
