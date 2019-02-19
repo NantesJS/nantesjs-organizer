@@ -3,7 +3,7 @@ const prompts = require('prompts')
 const { ask } = require('./questions')
 const { generateMarkdown } = require('./template')
 
-ask(prompts)
+ask()
   .then(meetup => ([
     `meetup-${meetup.id}.md`,
     generateMarkdown(meetup),

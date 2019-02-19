@@ -1,3 +1,4 @@
+const prompts = require('prompts')
 const uuid = require('uuid/v4')
 const { basicQuestions } = require('./basic')
 const { getSponsorOrHostQuestions } = require('./sponsorOrHost')
@@ -5,9 +6,9 @@ const { talkQuestions } = require('./talk')
 const { speakerQuestions } = require('./speaker')
 const { findPlaceInNantes } = require('../places')
 
-const getTalkWithSpeaker = async prompt => {
-  const talk = await prompt(talkQuestions)
-  const speaker = await prompt(speakerQuestions)
+const getTalkWithSpeaker = async () => {
+  const talk = await prompts(talkQuestions)
+  const speaker = await prompts(speakerQuestions)
 
   return {
     ...talk,
@@ -19,15 +20,15 @@ const getTalkWithSpeaker = async prompt => {
   }
 }
 
-exports.ask = async prompt => {
-  const basics = await prompt(basicQuestions)
-  const sponsor = await prompt(getSponsorOrHostQuestions('sponsor'))
-  const venue = await prompt(getSponsorOrHostQuestions('hébergeur'))
+exports.ask = async () => {
+  const basics = await prompts(basicQuestions)
+  const venue = await prompts(getSponsorOrHostQuestions('sponsor'))
+  const sponsor = await prompts(getSponsorOrHostQuestions('hébergeur'))
   const place = await findPlaceInNantes(venue.name)
 
   const talks = [
-    await getTalkWithSpeaker(prompt),
-    await getTalkWithSpeaker(prompt),
+    await getTalkWithSpeaker(),
+    await getTalkWithSpeaker(),
   ]
 
   return {
