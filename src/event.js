@@ -29,7 +29,6 @@ exports.createEvent = async meetup => {
     })
     .then(event => event.url)
     .catch(error => {
-      console.error(JSON.stringify(error))
       const { error_description } = error.response
       console.error(red('✖ La création de l\évènement a échouée... 😱'))
       console.error(red('✖ Voici la description de l\'erreur :'))
