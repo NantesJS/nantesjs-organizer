@@ -1,0 +1,40 @@
+{
+  "name": "@nantesjs/organizer",
+  "version": "1.0.0",
+  "description": "NantesJS Organizer",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node -r dotenv/config src/index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NantesJS/nantesjs-organizer.git"
+  },
+  "keywords": [
+    "nantesjs",
+    "organizer",
+    "event",
+    "meetup"
+  ],
+  "author": "Charles-Henri GUERIN",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NantesJS/nantesjs-organizer/issues"
+  },
+  "homepage": "https://github.com/NantesJS/nantesjs-organizer#readme",
+  "dependencies": {
+    "@google/maps": "^0.5.5",
+    "date-fns": "^1.30.1",
+    "handlebars": "^4.1.0",
+    "kleur": "^3.0.2",
+    "lodash": "^4.17.11",
+    "prompts": "^2.0.3",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.2",
+    "dotenv": "^6.2.0",
+    "jest": "^24.1.0"
+  }
+}
