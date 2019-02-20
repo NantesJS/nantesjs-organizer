@@ -11,11 +11,11 @@ venue:
   id: {{venue.id}}
   name: '{{venue.name}}'
   link: '{{venue.link}}'
-  postal_code: NOT_IMPLEMENTED_YET
-  address: NOT_IMPLEMENTED_YET
-  city: NOT_IMPLEMENTED_YET
-  latitude: NOT_IMPLEMENTED_YET
-  longitude: NOT_IMPLEMENTED_YET
+  postal_code: {{venue.postal_code}}
+  address: {{venue.address}}
+  city: {{venue.city}}
+  latitude: {{venue.lat}}
+  longitude: {{venue.lng}}
 sponsor:
     id: {{sponsor.id}}
     name: '{{sponsor.name}}'
