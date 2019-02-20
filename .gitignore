@@ -60,5 +60,5 @@ typings/
 # next.js build output
 .next
 
-# Output of nantesjs-organizer
+# Ignore les fichiers markdown générés par l'outil
 meetup-*.md

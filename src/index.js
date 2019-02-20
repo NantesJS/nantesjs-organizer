@@ -1,14 +1,15 @@
 const { writeFileSync } = require('fs')
 const prompts = require('prompts')
+const { green } = require('kleur') 
 const { ask } = require('./questions')
-const { generateYaml } = require('./template')
+const { generateMarkdown } = require('./template')
 
-ask(prompts)
+ask()
   .then(meetup => ([
     `meetup-${meetup.id}.md`,
-    generateYaml(meetup),
+    generateMarkdown(meetup),
   ]))
   .then(([filename, yaml]) => {
     writeFileSync(filename, yaml)
-    console.log(`Generated ${filename} 🎉`)
+    console.log(green(`🎉 Le meetup a été sauvé dans le fichier suivant : ${filename}`))
   })

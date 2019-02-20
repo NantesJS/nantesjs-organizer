@@ -30,15 +30,15 @@ describe('Questions', () => {
       id: expect.any(String),
       title: 'Meetup #37',
       date: '21/02/2019',
-      venue: {
-        id: expect.any(String),
-        name: 'My Money Bank',
-        link: 'https://www.mymoneybank.fr',
-      },
-      sponsor: {
+      venue: expect.objectContaining({
         id: expect.any(String),
         name: 'Clever Age',
         link: 'https://www.clever-age.com',
+      }),
+      sponsor: {
+        id: expect.any(String),
+        name: 'My Money Bank',
+        link: 'https://www.mymoneybank.fr',
       },
       talks: [{
         id: expect.any(String),
@@ -62,3 +62,13 @@ describe('Questions', () => {
     }))
   })
 })
+
+jest.mock('../places.js', () => ({
+  findPlaceInNantes: () => ({
+    lat: 0,
+    lng: 0,
+    city: '',
+    postal_code: '',
+    address: '',
+  }),
+}))
