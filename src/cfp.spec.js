@@ -1,7 +1,8 @@
 const nock = require('nock')
 const {
-  getEventTalksTitle,
+  getEventTalksTitleWithId,
   getTalkSpeakers,
+  getEventTalkById,
 } = require('./cfp')
 
 describe('CFP', () => {
@@ -13,42 +14,53 @@ describe('CFP', () => {
 
     nock('https://conference-hall.io')
       .persist()
-      .get(`/api/v1/event/${CONFERENCE_HALL_EVENT_ID}?api=${CONFERENCE_HALL_API_KEY}`)
+      .get(`/api/v1/event/${CONFERENCE_HALL_EVENT_ID}?key=${CONFERENCE_HALL_API_KEY}`)
       .reply(200, {
         talks: [{
           id: 'talk1',
           title: 'mon premier talk',
+          abstract: 'La description de mon premier talk !',
           speakers: ['speaker1'],
         }, {
           id: 'talk2',
           title: 'mon second talk',
+          abstract: 'Voici mon second talk !',
           speakers: ['speaker2'],
         }],
         speakers: [{
           uid: 'speaker1',
-          name: 'Jane Doe',
+          displayName: 'Jane Doe',
+          twitter: '@jane_doe',
         }, {
           uid: 'speaker2',
-          name: 'John Doe',
+          displayName: 'John Doe',
         }],
       })
   })
 
   it('should return talks title for my event', async () => {
-    const titles = await getEventTalksTitle()
+    const titles = await getEventTalksTitleWithId()
 
-    expect(titles).toEqual(expect.arrayContaining([
-      'mon premier talk',
-      'mon second talk',
-    ]))
+    expect(titles).toEqual([
+      { id: 'talk1', title: 'mon premier talk' },
+      { id: 'talk2', title: 'mon second talk' },
+    ])
   })
 
-  it('should return speakers infos for a talk', async () => {
-    const speakers = await getTalkSpeakers('talk1')
+  it('should return formatted talk', async () => {
+    const talk = await getEventTalkById('talk1')
 
-    expect(speakers).toEqual(expect.arrayContaining([{
-      uid: 'speaker1',
-      name: 'Jane Doe',
-    }]))
+    expect(talk).toEqual({
+      id: 'talk1',
+      title: 'mon premier talk',
+      description: 'La description de mon premier talk !',
+      speakers: expect.arrayContaining([
+        expect.objectContaining({
+          id: 'speaker1',
+          name: 'Jane Doe',
+          link: 'jane_doe',
+        }),
+      ])
+    })
   })
 })

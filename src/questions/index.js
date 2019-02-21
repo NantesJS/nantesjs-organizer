@@ -3,23 +3,9 @@ const uuid = require('uuid/v4')
 const { bold, red } = require('kleur')
 const { basicQuestions } = require('./basic')
 const { getSponsorOrHostQuestions } = require('./sponsorOrHost')
-const { talkQuestions } = require('./talk')
+const { getTalkQuestion } = require('./talk')
 const { speakerQuestions } = require('./speaker')
 const { findPlaceInNantes } = require('../places')
-
-const getTalkWithSpeaker = async () => {
-  const talk = await prompts(talkQuestions)
-  const speaker = await prompts(speakerQuestions)
-
-  return {
-    ...talk,
-    id: uuid(),
-    speakers: [{
-      ...speaker,
-      id: uuid(),
-    }]
-  }
-}
 
 exports.ask = async () => {
   const basics = await prompts(basicQuestions)
@@ -31,8 +17,8 @@ exports.ask = async () => {
   })
 
   const talks = [
-    await getTalkWithSpeaker(),
-    await getTalkWithSpeaker(),
+    await getTalkQuestion().then(prompts),
+    await getTalkQuestion().then(prompts),
   ]
 
   return {
@@ -48,6 +34,6 @@ exports.ask = async () => {
       ...sponsor,
       id: uuid(),
     },
-    talks,
+    talks: talks.map(({ talk }) => talk),
   }
 }
