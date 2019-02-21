@@ -25,7 +25,7 @@ exports.ask = async () => {
   const basics = await prompts(basicQuestions)
   const sponsor = await prompts(getSponsorOrHostQuestions('sponsor'))
   const venue = await prompts(getSponsorOrHostQuestions('hébergeur'))
-  const place = await findPlaceInNantes(venue.name).catch(error => {
+  const place = await findPlaceInNantes(venue.name).catch(() => {
     console.warn(bold().red('✖ La récupération des informations relatives au lieu de l\'évènement a été infructueuse.'))
     console.warn(bold().red('✖ Tu vas devoir saisir ces informations toi-même... 😢'))
   })
