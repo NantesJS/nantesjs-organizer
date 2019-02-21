@@ -16,6 +16,13 @@ https://github.com/googlemaps/google-maps-services-js#api-keys
 
 Celle-ci doit-être utilisable à partir de la variable d'environnement `GOOGLE_MAPS_API_KEY`.
 
+### Conference-Hall :loudspeaker:
+
+Afin de pouvoir sélectionner sélectionner un talk, vous devez vous munir d'une clé API ainsi que de l'identifiant de votre évènement dans conference-hall.
+
+Ces informations doivent-être récupérable à partir des variables d'environnement suivantes : `CONFERENCE_HALL_API_KEY` et `CONFERENCE_HALL_EVENT_ID`.
+
+
 ### Eventbrite :admission_tickets:
 
 Vous devez créer une clé API pour pouvoir utiliser l'API eventbrite et pouvoir créer un évènement.
