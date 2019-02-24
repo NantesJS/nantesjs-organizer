@@ -4,8 +4,10 @@ const getDay = require('date-fns/get_day')
 const addWeeks = require('date-fns/add_weeks')
 const format = require('date-fns/format')
 const isValid = require('date-fns/is_valid')
+const isBefore = require('date-fns/is_before')
+const addMonths = require('date-fns/add_months')
 
-exports.getThirdThursdayOfMonth = (date = new Date()) => {
+function getNextThirdThursdayOfMonth(date = new Date()) {
   const THURSDAY = 4
   const THIRD = 3 - 1
 
@@ -15,12 +17,24 @@ exports.getThirdThursdayOfMonth = (date = new Date()) => {
   })
   const thirdThursday = addWeeks(firstThursday, THIRD)
 
+  if (isBefore(thirdThursday, date)) {
+    const nextMonth = addMonths(startDateOfMonth, 1)
+
+    return getNextThirdThursdayOfMonth(nextMonth)
+  }
+
   return format(thirdThursday, 'YYYY-MM-DD')
 }
 
-exports.isValid = date => {
+exports.getNextThirdThursdayOfMonth = getNextThirdThursdayOfMonth
+
+exports.isValid = (date, today = new Date()) => {
   try {
-    return isValid(new Date(date))
+    const dateToValid = new Date(date)
+
+    if (!isValid(dateToValid)) return false
+
+    return isBefore(today, dateToValid)
   } catch {
     return false
   }
