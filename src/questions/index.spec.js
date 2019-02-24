@@ -1,14 +1,17 @@
 const prompts = require('prompts')
 const { ask } = require('./index')
+const { findPlaceInNantes } = require('../places')
 
 describe('Questions', () => {
+  const hostName = 'Clever Age'
+
   beforeAll(() => {
     prompts.inject([
       37,
       '2019-02-21',
       'My Money Bank',
       'https://www.mymoneybank.fr',
-      'Clever Age',
+      hostName,
       'https://www.clever-age.com',
       'Machine Learning driven user-experiences made easy with Guess.js',
       'Comment faire plus hype que le Machine Learning ?! Faire de la web perf avec !!! 🤯 #PWA #AI',
@@ -61,10 +64,18 @@ describe('Questions', () => {
       }]
     }))
   })
+
+  it('should look for the host coordinates', async () => {
+    expect.assertions(1)
+
+    await ask(prompts)
+
+    expect(findPlaceInNantes).toHaveBeenCalledWith(hostName)
+  })
 })
 
 jest.mock('../places.js', () => ({
-  findPlaceInNantes: () => ({
+  findPlaceInNantes: jest.fn().mockResolvedValue({
     lat: 0,
     lng: 0,
     city: '',
