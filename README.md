@@ -2,6 +2,9 @@
 
 # nantesjs-organizer
 
+## Pré-requis :toolbox:
+
+* Node >= 11.0.0
 
 ## Configuration :wrench:
 
