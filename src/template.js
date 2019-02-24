@@ -6,7 +6,7 @@ status: next
 title: '{{title}}'
 date: '{{date}}'
 image: NOT_IMPLEMENTED_YET
-ticketsUrl: NOT_IMPLEMENTED_YET
+ticketsUrl: {{ticketsUrl}}
 venue:
   id: {{venue.id}}
   name: '{{venue.name}}'

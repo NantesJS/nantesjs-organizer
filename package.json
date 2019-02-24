@@ -26,6 +26,7 @@
   "dependencies": {
     "@google/maps": "^0.5.5",
     "date-fns": "^1.30.1",
+    "eventbrite": "^1.2.1",
     "handlebars": "^4.1.0",
     "kleur": "^3.0.2",
     "lodash": "^4.17.11",
