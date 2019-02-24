@@ -28,12 +28,15 @@ exports.createEvent = async meetup => {
       })
     })
     .then(event => event.url)
-    .catch(error => {
-      const { error_description } = error.response
+    .catch(({ parsedError }) => {
+      const { error, description } = parsedError
+
       console.error(red('✖ La création de l\évènement a échouée... 😱'))
       console.error(red('✖ Voici la description de l\'erreur :'))
-      console.error(white().bgRed(error_description))
+      console.error(white().bgRed(`[${error}] ${description}`))
     })
+
+  if (!ticketsUrl) return meetup
 
   process.stdout.write(green('🎟  Voici l\'adresse vers la billeterie : '))
   console.log(bold().white().bgGreen(ticketsUrl))
