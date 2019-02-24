@@ -26,6 +26,7 @@
   "dependencies": {
     "@google/maps": "^0.5.5",
     "date-fns": "^1.30.1",
+    "dotenv": "^6.2.0",
     "eventbrite": "^1.2.1",
     "handlebars": "^4.1.0",
     "httpie": "^1.1.0",
@@ -36,8 +37,10 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
-    "dotenv": "^6.2.0",
     "jest": "^24.1.0",
     "nock": "^10.0.6"
+  },
+  "engines": {
+    "node": ">= 11.0.0"
   }
 }
