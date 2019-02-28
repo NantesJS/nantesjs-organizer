@@ -1,5 +1,5 @@
 const isInteger = require('lodash/fp/isInteger')
-const { getThirdThursdayOfMonth, isValid, format } = require('../date')
+const { getNextThirdThursdayOfMonth, isValid, format } = require('../date')
 
 exports.basicQuestions = [{
   type: 'number',
@@ -11,7 +11,7 @@ exports.basicQuestions = [{
   type: 'text',
   name: 'date',
   message: 'Quelle est la date de cet évènement ?',
-  initial: getThirdThursdayOfMonth(),
+  initial: getNextThirdThursdayOfMonth(),
   validate: isValid,
   format,
 }]
