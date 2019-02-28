@@ -2,6 +2,9 @@
 
 # nantesjs-organizer
 
+## Pré-requis 🧰
+
+* Node >= 11.0.0
 
 ## Configuration :wrench:
 
@@ -23,7 +26,7 @@ Afin de pouvoir sélectionner sélectionner un talk, vous devez vous munir d'une
 Ces informations doivent-être récupérable à partir des variables d'environnement suivantes : `CONFERENCE_HALL_API_KEY` et `CONFERENCE_HALL_EVENT_ID`.
 
 
-### Eventbrite :admission_tickets:
+### Eventbrite 🎟
 
 Vous devez créer une clé API pour pouvoir utiliser l'API eventbrite et pouvoir créer un évènement.
 
