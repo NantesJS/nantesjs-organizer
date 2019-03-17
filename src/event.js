@@ -19,8 +19,10 @@ exports.createEvent = async meetup => {
     .then(me => me.id)
     .then(userId => api.organizations.getByUser(userId))
     .then(getOr('', 'organizations[0].id'))
-    .then(organizationId => {
-      const event = newEvent(meetup.title, meetup.date)
+    .then(async organizationId => {
+      const organizer_id = await api.request(`/organizations/${organizationId}/organizers/`).then(getOr('', 'organizers[0].id'))
+
+      const event = newEvent(meetup.title, meetup.date, organizer_id)
 
       return api.request(`/organizations/${organizationId}/events/`, {
         method: 'POST',
@@ -47,13 +49,14 @@ exports.createEvent = async meetup => {
   }
 }
 
-function newEvent(title, date) {
+function newEvent(title, date, organizer_id) {
   const timezone = 'Europe/Paris'
   const [day, month, year] = date.split('/')
   const dateISO = `${year}-${month}-${day}`
 
   return {
     event: {
+      organizer_id,
       name: {
         html: title,
       },
