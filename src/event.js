@@ -41,14 +41,14 @@ exports.createEvent = async meetup => {
   }
 }
 
-function makeNewEvent({ title, date, talks }) {
+function makeNewEvent(meetup) {
   const timezone = 'Europe/Paris'
-  const [day, month, year] = date.split('/')
+  const [day, month, year] = meetup.date.split('/')
   const dateISO = `${year}-${month}-${day}`
 
   const event = {
     name: {
-      html: title,
+      html: meetup.title,
     },
     start: {
       timezone,
@@ -60,7 +60,7 @@ function makeNewEvent({ title, date, talks }) {
     },
     currency: 'EUR',
     description: {
-      html: getTalksDescription(talks),
+      html: getMeetupDescription(meetup),
     },
   }
 
@@ -81,6 +81,20 @@ function makeNewEvent({ title, date, talks }) {
         })
       })
   }
+}
+
+function getMeetupDescription({ talks, venue, sponsor }) {
+  return `
+    <article>
+      <p>Au programme :</p>
+      ${getTalksDescription(talks)}
+      <address>
+        On se retrouve chez <a href="${venue.link}">${venue.name}</a> 
+        et c'est <a href="${sponsor.link}">${sponsor.name}</a> 
+        qui offre le miam et la boisson ! Pleins de merci à eux.
+      </address>
+    </article>
+  `
 }
 
 function getTalksDescription(talks) {
