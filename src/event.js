@@ -74,7 +74,7 @@ function makeNewEvent({ title, date }) {
               organizer_id,
             },
           }),
-        }).catch(console.error)
+        })
       })
   }
 }
