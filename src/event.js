@@ -9,6 +9,7 @@ const {
   white,
   yellow,
 } = require('kleur')
+const emojiStrip = require('emoji-strip')
 
 const api = eventbrite({ token: process.env.EVENTBRITE_API_KEY })
 
@@ -40,7 +41,7 @@ exports.createEvent = async meetup => {
   }
 }
 
-function makeNewEvent({ title, date }) {
+function makeNewEvent({ title, date, talks }) {
   const timezone = 'Europe/Paris'
   const [day, month, year] = date.split('/')
   const dateISO = `${year}-${month}-${day}`
@@ -58,6 +59,9 @@ function makeNewEvent({ title, date }) {
       utc: `${dateISO}T22:00:00Z`, // 23H00 UTC+1
     },
     currency: 'EUR',
+    description: {
+      html: getTalksDescription(talks),
+    },
   }
 
   const getOrganizerId = getOr('', 'organizers[0].id')
@@ -77,4 +81,19 @@ function makeNewEvent({ title, date }) {
         })
       })
   }
+}
+
+function getTalksDescription(talks) {
+  return talks.map(talk => `
+    <section>
+      <h1>${talk.title}</h1>
+      <p>${talk.description.replace(/\n/g, '<br />')}</p>
+      <p>
+        Animé par 
+        ${talk.speakers
+          .map(speaker => `<a rel="author" href="${speaker.link}">${speaker.name}</a>`)
+          .join(', ')}.
+      </p>
+    </section>
+  `).map(emojiStrip).join('')
 }
