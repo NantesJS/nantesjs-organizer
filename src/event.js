@@ -9,6 +9,7 @@ const {
   white,
   yellow,
 } = require('kleur')
+const emojiStrip = require('emoji-strip')
 
 const api = eventbrite({ token: process.env.EVENTBRITE_API_KEY })
 
@@ -40,14 +41,14 @@ exports.createEvent = async meetup => {
   }
 }
 
-function makeNewEvent({ title, date }) {
+function makeNewEvent(meetup) {
   const timezone = 'Europe/Paris'
-  const [day, month, year] = date.split('/')
+  const [day, month, year] = meetup.date.split('/')
   const dateISO = `${year}-${month}-${day}`
 
   const event = {
     name: {
-      html: title,
+      html: meetup.title,
     },
     start: {
       timezone,
@@ -58,6 +59,9 @@ function makeNewEvent({ title, date }) {
       utc: `${dateISO}T22:00:00Z`, // 23H00 UTC+1
     },
     currency: 'EUR',
+    description: {
+      html: getMeetupDescription(meetup),
+    },
   }
 
   const getOrganizerId = getOr('', 'organizers[0].id')
@@ -77,4 +81,33 @@ function makeNewEvent({ title, date }) {
         })
       })
   }
+}
+
+function getMeetupDescription({ talks, venue, sponsor }) {
+  return `
+    <article>
+      <p>Au programme :</p>
+      ${getTalksDescription(talks)}
+      <address>
+        On se retrouve chez <a href="${venue.link}">${venue.name}</a> 
+        et c'est <a href="${sponsor.link}">${sponsor.name}</a> 
+        qui offre le miam et la boisson ! Pleins de merci à eux.
+      </address>
+    </article>
+  `
+}
+
+function getTalksDescription(talks) {
+  return talks.map(talk => `
+    <section>
+      <h1>${talk.title}</h1>
+      <p>${talk.description.replace(/\n/g, '<br />')}</p>
+      <p>
+        Animé par 
+        ${talk.speakers
+          .map(speaker => `<a rel="author" href="${speaker.link}">${speaker.name}</a>`)
+          .join(', ')}.
+      </p>
+    </section>
+  `).map(emojiStrip).join('')
 }
