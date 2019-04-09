@@ -10,6 +10,7 @@ const {
   yellow,
 } = require('kleur')
 const emojiStrip = require('emoji-strip')
+const clipboardy = require('clipboardy')
 
 const api = eventbrite({ token: process.env.EVENTBRITE_API_KEY })
 
@@ -28,6 +29,8 @@ exports.createEvent = async meetup => {
       console.error(red('✖ La création de l\évènement a échouée... 😱'))
       console.error(red('✖ Voici la description de l\'erreur :'))
       console.error(white().bgRed(`[${error}] ${description}`))
+      clipboardy.writeSync(getMeetupDescription(meetup))
+      console.log('The description have copied into your clipboard 😇')
     })
 
   if (!ticketsUrl) return meetup
