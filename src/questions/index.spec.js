@@ -28,7 +28,7 @@ describe('Questions', () => {
       title: 'Meetup #37',
       date: '21/02/2019',
       venue: expect.objectContaining({
-        id: expect.any(String),
+        id: 'v1',
         name: 'Clever Age',
         link: 'https://www.clever-age.com',
       }),
@@ -76,6 +76,10 @@ jest.mock('../places.js', () => ({
     postal_code: '',
     address: '',
   }),
+}))
+
+jest.mock('../venue.js', () => ({
+  createVenue: jest.fn().mockResolvedValue('v1'),
 }))
 
 jest.mock('../cfp.js', () => {
