@@ -4,7 +4,7 @@
 
 ## Pré-requis 🧰
 
-* Node >= 11.0.0
+* Node >= 12.0.0
 
 ## Configuration :wrench:
 
