@@ -1,4 +1,3 @@
-const { default: eventbrite } = require('eventbrite')
 const getOr = require('lodash/fp/getOr')
 const {
   bgGreen,
@@ -11,8 +10,7 @@ const {
 } = require('kleur')
 const emojiStrip = require('emoji-strip')
 const { createTickets } = require('./tickets')
-
-const api = eventbrite({ token: process.env.EVENTBRITE_API_KEY })
+const { api } = require('./api')
 
 exports.createEvent = async meetup => {
   console.log(yellow('⏳ Création de l\'évènement sur eventbrite...'))
