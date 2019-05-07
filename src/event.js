@@ -62,6 +62,7 @@ function makeNewEvent(meetup) {
     description: {
       html: getMeetupDescription(meetup),
     },
+    venue_id: meetup.venue.id,
   }
 
   const getOrganizerId = getOr('', 'organizers[0].id')
