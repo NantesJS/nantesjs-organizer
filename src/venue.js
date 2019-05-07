@@ -1,12 +1,10 @@
-const { default: eventbrite } = require('eventbrite')
 const {
   bgRed,
   red,
   white,
 } = require('kleur')
 const getOr = require('lodash/fp/getOr')
-
-const api = eventbrite({ token: process.env.EVENTBRITE_API_KEY })
+const { api } = require('./api')
 
 exports.createVenue = venue => {
   return api.users.me()

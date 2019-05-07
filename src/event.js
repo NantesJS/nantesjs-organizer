@@ -1,4 +1,3 @@
-const { default: eventbrite } = require('eventbrite')
 const getOr = require('lodash/fp/getOr')
 const {
   bgGreen,
@@ -10,18 +9,17 @@ const {
   yellow,
 } = require('kleur')
 const emojiStrip = require('emoji-strip')
-
-const api = eventbrite({ token: process.env.EVENTBRITE_API_KEY })
+const { createTickets } = require('./tickets')
+const { api } = require('./api')
 
 exports.createEvent = async meetup => {
   console.log(yellow('⏳ Création de l\'évènement sur eventbrite...'))
 
-  const ticketsUrl = await api.users.me()
+  const event = await api.users.me()
     .then(me => me.id)
     .then(userId => api.organizations.getByUser(userId))
     .then(getOr('', 'organizations[0].id'))
     .then(makeNewEvent(meetup))
-    .then(event => event.url)
     .catch(({ parsedError }) => {
       const { error, description } = parsedError
 
@@ -30,14 +28,16 @@ exports.createEvent = async meetup => {
       console.error(white().bgRed(`[${error}] ${description}`))
     })
 
-  if (!ticketsUrl) return meetup
+  if (!event) return meetup
+
+  await createTickets(event.id)
 
   process.stdout.write(green('🎟  Voici l\'adresse vers la billeterie : '))
-  console.log(bold().white().bgGreen(ticketsUrl))
+  console.log(bold().white().bgGreen(event.url))
 
   return {
     ...meetup,
-    ticketsUrl,
+    ticketsUrl: event.url,
   }
 }
 
