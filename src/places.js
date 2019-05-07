@@ -20,7 +20,7 @@ exports.findPlaceInNantes = name => {
     .then(getOr('', 'json.candidates[0].place_id'))
     .then(placeid => googleMapsClient.place({ placeid }).asPromise())
     .then(getOr({}, 'json.result'))
-    .then(({ geometry, address_components }) => {
+    .then(({ geometry, address_components, place_id, name }) => {
       const street_number = getShortNameByType(address_components, 'street_number')
       const route = getShortNameByType(address_components, 'route')
       const postal_code = getShortNameByType(address_components, 'postal_code')
@@ -33,6 +33,8 @@ exports.findPlaceInNantes = name => {
         postal_code,
         city,
         address: `${street_number} ${route}`,
+        name,
+        google_place_id: place_id,
       }
     })
 }
