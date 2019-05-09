@@ -58,7 +58,7 @@ describe('CFP', () => {
         expect.objectContaining({
           id: 'speaker1',
           name: 'Jane Doe',
-          link: 'jane_doe',
+          link: 'https://twitter.com/jane_doe',
         }),
       ])
     })

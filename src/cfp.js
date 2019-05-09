@@ -33,10 +33,19 @@ exports.getEventTalkById = async talkId => {
     id: talk.id,
     title: talk.title,
     description: talk.abstract,
-    speakers: speakers.map(speaker => ({
-      id: speaker.uid,
-      name: speaker.displayName,
-      link: (speaker.twitter || '').replace('@', ''),
-    })),
+    speakers: speakers.map(speaker => {
+      let link = ''
+
+      if (speaker.twitter) {
+        const handle = speaker.twitter.replace('@', '')
+        link = `https://twitter.com/${handle}`
+      }
+
+      return {
+        id: speaker.uid,
+        name: speaker.displayName,
+        link,
+      }
+    }),
   }
 }
