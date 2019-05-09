@@ -12,7 +12,7 @@ exports.createVenue = venue => {
     .then(userId => api.organizations.getByUser(userId))
     .then(getOr('', 'organizations[0].id'))
     .then(makeNewVenue(venue))
-    .then(({ id }) => id)
+    .then(({ id }) => String(id))
     .catch(({ parsedError }) => {
       const { error, description } = parsedError
 
