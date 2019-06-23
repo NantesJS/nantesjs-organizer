@@ -1,49 +1,18 @@
 const nock = require('nock')
 const {
-  getEventTalksTitleWithId,
+  getEventSubmittedTalksTitleWithId,
   getTalkSpeakers,
   getEventTalkById,
 } = require('./cfp')
 
 describe('CFP', () => {
-  beforeAll(() => {
-    const {
-      CONFERENCE_HALL_EVENT_ID,
-      CONFERENCE_HALL_API_KEY,
-    } = process.env
-
-    nock('https://conference-hall.io')
-      .persist()
-      .get(`/api/v1/event/${CONFERENCE_HALL_EVENT_ID}?key=${CONFERENCE_HALL_API_KEY}`)
-      .reply(200, {
-        talks: [{
-          id: 'talk1',
-          title: 'mon premier talk',
-          abstract: 'La description de mon premier talk !',
-          speakers: ['speaker1'],
-        }, {
-          id: 'talk2',
-          title: 'mon second talk',
-          abstract: 'Voici mon second talk !',
-          speakers: ['speaker2'],
-        }],
-        speakers: [{
-          uid: 'speaker1',
-          displayName: 'Jane Doe',
-          twitter: '@jane_doe',
-        }, {
-          uid: 'speaker2',
-          displayName: 'John Doe',
-        }],
-      })
-  })
+  beforeAll(mockCFP)
 
   it('should return talks title for my event', async () => {
-    const titles = await getEventTalksTitleWithId()
+    const titles = await getEventSubmittedTalksTitleWithId()
 
     expect(titles).toEqual([
       { id: 'talk1', title: 'mon premier talk' },
-      { id: 'talk2', title: 'mon second talk' },
     ])
   })
 
@@ -64,3 +33,55 @@ describe('CFP', () => {
     })
   })
 })
+
+function mockCFP() {
+  const {
+    CONFERENCE_HALL_EVENT_ID,
+    CONFERENCE_HALL_API_KEY,
+  } = process.env
+
+  nock('https://conference-hall.io')
+    .persist()
+    .get(`/api/v1/event/${CONFERENCE_HALL_EVENT_ID}?key=${CONFERENCE_HALL_API_KEY}`)
+    .reply(200, {
+      talks: [{
+        id: 'talk1',
+        title: 'mon premier talk',
+        abstract: 'La description de mon premier talk !',
+        speakers: ['speaker1'],
+        state: 'submitted',
+      }, {
+        id: 'talk2',
+        title: 'mon second talk',
+        abstract: 'Voici mon second talk !',
+        speakers: ['speaker2'],
+        state: 'accepted',
+      }, {
+        id: 'talk3',
+        title: 'mon troisième talk',
+        abstract: 'Voici mon troisième talk !',
+        speakers: ['speaker3'],
+        state: 'rejected',
+      }, {
+        id: 'talk4',
+        title: 'mon quatrième talk',
+        abstract: 'Voici mon quatrième talk !',
+        speakers: ['speaker4'],
+        state: 'confirmed',
+      }, {
+        id: 'talk5',
+        title: 'mon cinquième talk',
+        abstract: 'Voici mon cinquième talk !',
+        speakers: ['speaker5'],
+        state: 'declined',
+      }],
+      speakers: [{
+        uid: 'speaker1',
+        displayName: 'Jane Doe',
+        twitter: '@jane_doe',
+      }, {
+        uid: 'speaker2',
+        displayName: 'John Doe',
+      }],
+    })
+}

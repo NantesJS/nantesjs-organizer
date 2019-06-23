@@ -18,8 +18,10 @@ const getEvent = () => {
     })
 }
 
-exports.getEventTalksTitleWithId = () => getEvent().then(event => {
-  return event.talks.flatMap(({ id, title }) => ({ id, title }))
+exports.getEventSubmittedTalksTitleWithId = () => getEvent().then(event => {
+  return event.talks
+    .filter(({ state }) => state === 'submitted')
+    .flatMap(({ id, title }) => ({ id, title }))
 })
 
 exports.getEventTalkById = async talkId => {
