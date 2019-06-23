@@ -9,11 +9,12 @@ const {
   yellow,
 } = require('kleur')
 const emojiStrip = require('emoji-strip')
+const ora = require('ora')
 const { createTickets } = require('./tickets')
 const { api } = require('./api')
 
 exports.createEvent = async meetup => {
-  console.log(yellow('⏳ Création de l\'évènement sur eventbrite...'))
+  const spinner = ora(yellow('⏳ Création de l\'évènement sur eventbrite...'))
 
   const event = await api.users.me()
     .then(me => me.id)
@@ -23,17 +24,25 @@ exports.createEvent = async meetup => {
     .catch(({ parsedError }) => {
       const { error, description } = parsedError
 
-      console.error(red('✖ La création de l\évènement a échouée... 😱'))
-      console.error(red('✖ Voici la description de l\'erreur :'))
-      console.error(white().bgRed(`[${error}] ${description}`))
+      const messages = [
+        red('La création de l\évènement a échouée... 😱'),
+        red('✖ Voici la description de l\'erreur :'),
+        white().bgRed(`[${error}] ${description}`),
+      ]
+
+      spinner.fail(messages.join('\n'))
     })
 
   if (!event) return meetup
 
   await createTickets(event.id)
 
-  process.stdout.write(green('🎟  Voici l\'adresse vers la billeterie : '))
-  console.log(bold().white().bgGreen(event.url))
+  const messages = [
+    green('🎟  Voici l\'adresse vers la billeterie :'),
+    bold().white().bgGreen(event.url),
+  ]
+
+  spinner.succeed(messages.join(' '))
 
   return {
     ...meetup,

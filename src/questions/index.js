@@ -12,11 +12,13 @@ exports.ask = async () => {
   const basics = await prompts(basicQuestions)
   const sponsor = await prompts(getSponsorOrHostQuestions('sponsor'))
   const venue = await prompts(getSponsorOrHostQuestions('hébergeur'))
-  const place = await findPlaceInNantes(venue.name).catch(() => {
-    console.warn(bold().red('✖ La récupération des informations relatives au lieu de l\'évènement a été infructueuse.'))
-    console.warn(bold().red('✖ Tu vas devoir saisir ces informations toi-même... 😢'))
-  })
-  const venueId = await createVenue(place)
+  const place = await findPlaceInNantes(venue.name)
+
+  let venueId
+
+  if (place) {
+    venueId = await createVenue(place)
+  }
 
   const { talk: firstTalk } = await getTalkQuestion().then(prompts)
   const { talk: secondTalk } = await getTalkQuestion(firstTalk.id).then(prompts)
