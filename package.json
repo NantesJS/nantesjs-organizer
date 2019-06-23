@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node -r dotenv/config src/index.js",
-    "test": "jest --setupFiles dotenv/config"
+    "test": "cross-env TZ=Europe/Paris jest"
   },
   "repository": {
     "type": "git",
@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
+    "cross-env": "^5.2.0",
     "jest": "^24.1.0",
     "nock": "^10.0.6"
   },
