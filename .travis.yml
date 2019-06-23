@@ -7,5 +7,5 @@ cache:
   directories:
   - "$HOME/.npm"
 script:
-  - npx jest --coverage && npx coveralls < ./coverage/lcov.info
+  - npx jest --setupFiles dotenv/config --coverage && npx coveralls < ./coverage/lcov.info
   - docker run --rm -i hadolint/hadolint < Dockerfile
