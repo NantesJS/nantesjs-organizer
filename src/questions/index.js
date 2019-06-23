@@ -18,10 +18,8 @@ exports.ask = async () => {
   })
   const venueId = await createVenue(place)
 
-  const talks = [
-    await getTalkQuestion().then(prompts),
-    await getTalkQuestion().then(prompts),
-  ]
+  const { talk: firstTalk } = await getTalkQuestion().then(prompts)
+  const { talk: secondTalk } = await getTalkQuestion(firstTalk.id).then(prompts)
 
   return {
     ...basics,
@@ -36,6 +34,6 @@ exports.ask = async () => {
       ...sponsor,
       id: uuid(),
     },
-    talks: talks.map(({ talk }) => talk),
+    talks: [firstTalk, secondTalk],
   }
 }
