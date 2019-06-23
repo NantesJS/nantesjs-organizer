@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node -r dotenv/config src/index.js",
-    "test": "jest"
+    "test": "jest --setupFiles dotenv/config"
   },
   "repository": {
     "type": "git",
