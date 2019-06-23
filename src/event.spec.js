@@ -10,10 +10,7 @@ describe('event', () => {
     it('should create event with the right time (summer time UTC+2)', async () => {
       const meetup = getMeetup({ date: '20/06/2019' })
       const createNewEventForOrganization = makeNewEvent(meetup)
-      const expectedDates = getExpectedDates({
-        start: { timezone: 'Europe/Paris', utc: '2019-06-20T17:00:00.000Z' },
-        end: { timezone: 'Europe/Paris', utc: '2019-06-20T20:00:00.000Z' },
-      })
+      const expectedDates = getExpectedDates('2019-06-20T17:00:00.000Z', '2019-06-20T20:00:00.000Z')
 
       await createNewEventForOrganization('organizationId')
 
@@ -23,10 +20,7 @@ describe('event', () => {
     it('should create event with the right time (winter time UTC+1)', async () => {
       const meetup = getMeetup({ date: '21/02/2019' })
       const createNewEventForOrganization = makeNewEvent(meetup)
-      const expectedDates = getExpectedDates({
-        start: { timezone: 'Europe/Paris', utc: '2019-02-21T18:00:00.000Z' },
-        end: { timezone: 'Europe/Paris', utc: '2019-02-21T21:00:00.000Z' },
-      })
+      const expectedDates = getExpectedDates('2019-02-21T18:00:00.000Z', '2019-02-21T21:00:00.000Z')
 
       await createNewEventForOrganization('organizationId')
 
@@ -35,8 +29,13 @@ describe('event', () => {
   })
 })
 
-function getExpectedDates(dates) {
-  return JSON.stringify(dates).replace(/^{|}$/g, '')
+function getExpectedDates(startUTC, endUTC) {
+  const timezone = 'Europe/Paris'
+
+  return JSON.stringify({
+    start: { timezone, utc: startUTC },
+    end: { timezone, utc: endUTC },
+  }).replace(/^{|}$/g, '')
 }
 
 function expectRequestToHaveBeenCalledWithDates(request, expectedDates) {
