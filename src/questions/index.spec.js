@@ -106,7 +106,7 @@ jest.mock('../cfp.js', () => {
 
   return {
     getEventTalkById: jest.fn().mockImplementation(id => talks.find(talk => talk.id === id)),
-    getEventTalksTitleWithId: jest.fn().mockResolvedValue(talks.map(talk => ({
+    getEventSubmittedTalksTitleWithId: jest.fn().mockResolvedValue(talks.map(talk => ({
       id: talk.id,
       title: talk.title,
     }))),
