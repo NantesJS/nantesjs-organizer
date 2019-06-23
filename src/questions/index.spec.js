@@ -5,7 +5,7 @@ const { findPlaceInNantes } = require('../places')
 describe('Questions', () => {
   const hostName = 'Clever Age'
 
-  beforeAll(() => {
+  beforeEach(() => {
     prompts.inject([
       37,
       '2019-02-21',
