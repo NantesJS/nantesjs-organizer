@@ -1,6 +1,7 @@
 const { writeFileSync } = require('fs')
 const prompts = require('prompts')
-const { green } = require('kleur') 
+const { green, yellow } = require('kleur')
+const ora = require('ora')
 const { ask } = require('./questions')
 const { generateMarkdown } = require('./template')
 const { createEvent } = require('./event')
@@ -12,6 +13,12 @@ ask()
     generateMarkdown(meetup),
   ]))
   .then(([filename, yaml]) => {
-    writeFileSync(filename, yaml)
-    console.log(green(`🎉 Le meetup a été sauvé dans le fichier suivant : ${filename}`))
+    const spinner = ora(yellow('⏳ Récupération des coordonnées de l\'hébergeur...')).start()
+
+    try {
+      writeFileSync(filename, yaml)
+      spinner.succeed(green(`🎉 Le meetup a été sauvé dans le fichier suivant : ${filename}`))
+    } catch (error) {
+      spinner.fail(red(`Une erreur est survenue lors de la sauvegarde du meetup : ${error}`))
+    }
   })

@@ -2,11 +2,15 @@ const {
   bgRed,
   red,
   white,
+  yellow,
 } = require('kleur')
 const getOr = require('lodash/fp/getOr')
+const ora = require('ora')
 const { api } = require('./api')
 
 exports.createVenue = venue => {
+  const spinner = ora(yellow('⏳ Création de l\'hébergeur dans eventbrite...')).start()
+
   return api.users.me()
     .then(me => me.id)
     .then(userId => api.organizations.getByUser(userId))
@@ -16,9 +20,13 @@ exports.createVenue = venue => {
     .catch(({ parsedError }) => {
       const { error, description } = parsedError
 
-      console.error(red('✖ La création du lieu a échouée... 😱'))
-      console.error(red('✖ Voici la description de l\'erreur :'))
-      console.error(white().bgRed(`[${error}] ${description}`))
+      const messages = [
+        red('La création du lieu a échouée... 😱'),
+        red('✖ Voici la description de l\'erreur :'),
+        white().bgRed(`[${error}] ${description}`),
+      ]
+
+      spinner.fail(messages.join('\n'))
     })
 }
 

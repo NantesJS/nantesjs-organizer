@@ -3,7 +3,8 @@ const googleMapsClient = require('@google/maps').createClient({
   Promise,
   key: process.env.GOOGLE_MAPS_API_KEY,
 })
-const { green, yellow } = require('kleur')
+const { bold, green, yellow, red } = require('kleur')
+const ora = require('ora')
 
 const getShortNameByType = (array, type) => {
   const { short_name } = array.find(({ types }) => types.includes(type))
@@ -11,7 +12,7 @@ const getShortNameByType = (array, type) => {
 }
 
 exports.findPlaceInNantes = name => {
-  console.log(yellow('⏳ Récupération des coordonnées de l\'hébergeur...'))
+  const spinner = ora(yellow('⏳ Récupération des coordonnées de l\'hébergeur...')).start()
 
   return googleMapsClient.findPlace({
     input: `${name}, Nantes`,
@@ -26,7 +27,7 @@ exports.findPlaceInNantes = name => {
       const postal_code = getShortNameByType(address_components, 'postal_code')
       const city = getShortNameByType(address_components, 'locality')
 
-      console.log(green('🏡 Les coordonnées de l\'hébergeur ont été récupérées avec succès'))
+      spinner.succeed(green('🏡 Les coordonnées de l\'hébergeur ont été récupérées avec succès'))
 
       return {
         ...geometry.location,
@@ -36,5 +37,12 @@ exports.findPlaceInNantes = name => {
         name,
         google_place_id: place_id,
       }
+    })
+    .catch(() => {
+      const messages = [
+        bold().red('La récupération des informations relatives au lieu de l\'évènement a été infructueuse.'),
+        bold().red('✖ Tu vas devoir saisir ces informations toi-même... 😢'),
+      ]
+      spinner.fail(messages.join('\n'))
     })
 }
