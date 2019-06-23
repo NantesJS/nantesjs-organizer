@@ -41,8 +41,12 @@ exports.createEvent = async meetup => {
   }
 }
 
-function makeNewEvent(meetup) {
-  const timezone = 'Europe/Paris'
+function getUTC (dateTime) {
+  return new Date(dateTime).toISOString()
+}
+
+exports.makeNewEvent = meetup => {
+  const timezone = process.env.TZ
   const [day, month, year] = meetup.date.split('/')
   const dateISO = `${year}-${month}-${day}`
 
@@ -52,11 +56,11 @@ function makeNewEvent(meetup) {
     },
     start: {
       timezone,
-      utc: `${dateISO}T18:00:00Z`, // 19H00 UTC+1
+      utc: getUTC(`${dateISO} 19:00`),
     },
     end: {
       timezone,
-      utc: `${dateISO}T22:00:00Z`, // 23H00 UTC+1
+      utc: getUTC(`${dateISO} 22:00`),
     },
     currency: 'EUR',
     description: {
