@@ -25,20 +25,27 @@ describe('talk', () => {
       }))
     })
 
-    it('should exclude t1 from choices', async () => {
+    it('should exclude first talk from choices', async () => {
       const talks = mockTalks()
+      const firstTalk = talks[0]
 
-      const question = await getTalkQuestion('t1')
+      const question = await getTalkQuestion(firstTalk.id)
 
       expect(question).toEqual(expect.objectContaining({
-        choices: toChoices([talks[1]]),
+        choices: expect.not.arrayContaining([
+          toChoice(firstTalk),
+        ]),
       }))
     })
   })
 })
 
 function toChoices(talks) {
-  return talks.map(({ id, title }) => ({ title, value: id }))
+  return talks.map(toChoice)
+}
+
+function toChoice(talk) {
+  return { title: talk.title, value: talk.id }
 }
 
 function mockTalks() {
