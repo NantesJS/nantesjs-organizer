@@ -1,5 +1,6 @@
 const httpie = require('httpie')
-const { bold, red } = require('kleur')
+const { bold, red, yellow } = require('kleur')
+const { spinner, returnDataAndStopSpinner } = require('./spinner')
 
 const getEvent = () => {
   const {
@@ -8,13 +9,18 @@ const getEvent = () => {
   } = process.env
   const BASE_URI = 'https://conference-hall.io'
   const API_URL = `${BASE_URI}/api/v1/event/${CONFERENCE_HALL_EVENT_ID}?key=${CONFERENCE_HALL_API_KEY}`
+  const spinnerEvent = spinner(yellow('⏳ Récupération de l\'évènement sur Conference-hall...')).start()
 
   return httpie.get(API_URL)
     .then(response => response.data)
+    .then(returnDataAndStopSpinner(spinnerEvent))
     .catch(({ data }) => {
-      console.error(red('✖ La récupération de l\'évènement a échouée... 😱'))
-      console.error(red('✖ Voici la description de l\'erreur :'))
-      console.error(bold().white().bgRed(data.error))
+      const messages = [
+        red('La récupération de l\'évènement sur Conference-hall a échouée... 😱'),
+        red('✖ Voici la description de l\'erreur :'),
+        bold().white().bgRed(data.error),
+      ]
+      spinnerEvent.fail(messages.join('\n'))
     })
 }
 

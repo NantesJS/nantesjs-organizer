@@ -9,12 +9,12 @@ const {
   yellow,
 } = require('kleur')
 const emojiStrip = require('emoji-strip')
-const ora = require('ora')
 const { createTickets } = require('./tickets')
 const { api } = require('./api')
+const { spinner, returnDataAndStopSpinner } = require('./spinner')
 
 exports.createEvent = async meetup => {
-  const spinner = ora(yellow('⏳ Création de l\'évènement sur eventbrite...'))
+  const spinnerEvent = spinner(yellow('⏳ Création de l\'évènement sur eventbrite...')).start()
 
   const event = await api.users.me()
     .then(me => me.id)
@@ -30,7 +30,7 @@ exports.createEvent = async meetup => {
         white().bgRed(`[${error}] ${description}`),
       ]
 
-      spinner.fail(messages.join('\n'))
+      spinnerEvent.fail(messages.join('\n'))
     })
 
   if (!event) return meetup
@@ -42,7 +42,7 @@ exports.createEvent = async meetup => {
     bold().white().bgGreen(event.url),
   ]
 
-  spinner.succeed(messages.join(' '))
+  spinnerEvent.succeed(messages.join(' '))
 
   return {
     ...meetup,
@@ -51,10 +51,12 @@ exports.createEvent = async meetup => {
 }
 
 function getUTC (dateTime) {
-  return new Date(dateTime).toISOString()
+  return new Date(dateTime).toISOString().replace(/\.\d{3}Z$/, 'Z')
 }
 
-exports.makeNewEvent = meetup => {
+exports.makeNewEvent = makeNewEvent
+
+function makeNewEvent(meetup) {
   const timezone = process.env.TZ
   const [day, month, year] = meetup.date.split('/')
   const dateISO = `${year}-${month}-${day}`

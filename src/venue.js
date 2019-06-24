@@ -5,11 +5,11 @@ const {
   yellow,
 } = require('kleur')
 const getOr = require('lodash/fp/getOr')
-const ora = require('ora')
 const { api } = require('./api')
+const { spinner, returnDataAndStopSpinner } = require('./spinner')
 
 exports.createVenue = venue => {
-  const spinner = ora(yellow('⏳ Création de l\'hébergeur dans eventbrite...')).start()
+  const spinnerVenue = spinner(yellow('⏳ Création de l\'hébergeur dans eventbrite...')).start()
 
   return api.users.me()
     .then(me => me.id)
@@ -17,6 +17,7 @@ exports.createVenue = venue => {
     .then(getOr('', 'organizations[0].id'))
     .then(makeNewVenue(venue))
     .then(({ id }) => String(id))
+    .then(returnDataAndStopSpinner(spinnerVenue))
     .catch(({ parsedError }) => {
       const { error, description } = parsedError
 
@@ -26,7 +27,7 @@ exports.createVenue = venue => {
         white().bgRed(`[${error}] ${description}`),
       ]
 
-      spinner.fail(messages.join('\n'))
+      spinnerVenue.fail(messages.join('\n'))
     })
 }
 
