@@ -5,16 +5,13 @@ const {
   yellow,
 } = require('kleur')
 const getOr = require('lodash/fp/getOr')
-const { api } = require('./api')
 const { spinner, returnDataAndStopSpinner } = require('./spinner')
+const { api, getOrganization } = require('./api')
 
 exports.createVenue = venue => {
   const spinnerVenue = spinner(yellow('⏳ Création de l\'hébergeur dans eventbrite...')).start()
 
-  return api.users.me()
-    .then(me => me.id)
-    .then(userId => api.organizations.getByUser(userId))
-    .then(getOr('', 'organizations[0].id'))
+  return getOrganization()
     .then(makeNewVenue(venue))
     .then(({ id }) => String(id))
     .then(returnDataAndStopSpinner(spinnerVenue))
@@ -23,6 +20,46 @@ exports.createVenue = venue => {
 
       const messages = [
         red('La création du lieu a échouée... 😱'),
+        red('✖ Voici la description de l\'erreur :'),
+        white().bgRed(`[${error}] ${description}`),
+      ]
+
+      spinnerVenue.fail(messages.join('\n'))
+    })
+}
+
+exports.getVenues = () => {
+  const spinnerVenue = spinner(yellow('⏳ Récupération des hébergeurs dans eventbrite...')).start()
+
+  return getOrganization()
+    .then(organizationId => {
+      return api.request(`/organizations/${organizationId}/venues/`)
+    })
+    .then(getOr([], 'venues'))
+    .then(returnDataAndStopSpinner(spinnerVenue))
+    .catch(({ parsedError }) => {
+      const { error, description } = parsedError
+
+      const messages = [
+        red('La récupération des hébergeurs a échouée... 😱'),
+        red('✖ Voici la description de l\'erreur :'),
+        white().bgRed(`[${error}] ${description}`),
+      ]
+
+      spinnerVenue.fail(messages.join('\n'))
+    })
+}
+
+exports.getVenueById = async id => {
+  const spinnerVenue = spinner(yellow(`⏳ Récupération de l\'hébergeur ${id} dans eventbrite...`)).start()
+
+  return api.request(`/venues/${id}/`)
+    .then(returnDataAndStopSpinner(spinnerVenue))
+    .catch(({ parsedError }) => {
+      const { error, description } = parsedError
+
+      const messages = [
+        red('La récupération des hébergeurs a échouée... 😱'),
         red('✖ Voici la description de l\'erreur :'),
         white().bgRed(`[${error}] ${description}`),
       ]

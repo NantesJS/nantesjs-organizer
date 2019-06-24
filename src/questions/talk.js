@@ -1,3 +1,4 @@
+const { returnDataAndStopSpinner } = require('../api')
 const {
   getEventSubmittedTalksTitleWithId,
   getEventTalkById,

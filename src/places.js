@@ -38,7 +38,7 @@ exports.findPlaceInNantes = name => {
         google_place_id: place_id,
       }
     })
-    .catch(error => {
+    .catch(() => {
       const messages = [
         bold().red('La récupération des informations relatives au lieu de l\'évènement a été infructueuse.'),
         bold().red('✖ Tu vas devoir saisir ces informations toi-même... 😢'),
