@@ -1,13 +1,21 @@
+const getOr = require('lodash/fp/getOr')
+const flow = require('lodash/flow')
 const { isNotEmpty } = require('./validators')
+const { findPlaceInNantes } = require('../places')
 
-exports.getSponsorOrHostQuestions = (sponsorOrHost = 'sponsor') => ([{
-  type: 'text',
-  name: 'name',
-  message: `Quel est le nom de votre ${sponsorOrHost} ?`,
-  validate: isNotEmpty,
-}, {
-  type: 'text',
-  name: 'link',
-  message: 'Quelle est l\'adresse de son site web ?',
-  validate: isNotEmpty,
-}])
+function getSponsorOrHostName(sponsorOrHost = 'sponsor') {
+  return {
+    type: 'text',
+    name: 'name',
+    message: `Quel est le nom de votre ${sponsorOrHost} ?`,
+    validate: isNotEmpty,
+  }
+}
+
+const getPlaceDetails = flow(getOr('', 'name'), findPlaceInNantes)
+
+exports.getSponsor = async prompts =>
+  prompts(getSponsorOrHostName('sponsor')).then(getPlaceDetails)
+
+exports.getHost = async prompts =>
+  prompts(getSponsorOrHostName('hébergeur')).then(getPlaceDetails)

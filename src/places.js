@@ -4,7 +4,7 @@ const googleMapsClient = require('@google/maps').createClient({
   key: process.env.GOOGLE_MAPS_API_KEY,
 })
 const { bold, green, yellow, red } = require('kleur')
-const { spinner } = require('./spinner')
+const { spinner, returnDataAndStopSpinner } = require('./spinner')
 
 const getShortNameByType = (array, type) => {
   const { short_name } = array.find(({ types }) => types.includes(type))
@@ -12,7 +12,7 @@ const getShortNameByType = (array, type) => {
 }
 
 exports.findPlaceInNantes = name => {
-  const spinnerPlace = spinner(yellow('⏳ Récupération des coordonnées de l\'hébergeur...')).start()
+  const spinnerPlace = spinner(yellow('⏳ Récupération des coordonnées...')).start()
 
   return googleMapsClient.findPlace({
     input: `${name}, Nantes`,
@@ -21,13 +21,13 @@ exports.findPlaceInNantes = name => {
     .then(getOr('', 'json.candidates[0].place_id'))
     .then(placeid => googleMapsClient.place({ placeid }).asPromise())
     .then(getOr({}, 'json.result'))
-    .then(({ geometry, address_components, place_id, name }) => {
+    .then(({ geometry, address_components, place_id, name, website }) => {
       const street_number = getShortNameByType(address_components, 'street_number')
       const route = getShortNameByType(address_components, 'route')
       const postal_code = getShortNameByType(address_components, 'postal_code')
       const city = getShortNameByType(address_components, 'locality')
 
-      spinnerPlace.succeed(green('🏡 Les coordonnées de l\'hébergeur ont été récupérées avec succès'))
+      spinnerPlace.succeed(green('🏡 Les coordonnées ont été récupérées avec succès'))
 
       return {
         ...geometry.location,
@@ -36,11 +36,12 @@ exports.findPlaceInNantes = name => {
         address: `${street_number} ${route}`,
         name,
         google_place_id: place_id,
+        link: website,
       }
     })
     .catch(error => {
       const messages = [
-        bold().red('La récupération des informations relatives au lieu de l\'évènement a été infructueuse.'),
+        bold().red('La récupération des coordonnées a été infructueuse.'),
         bold().red('✖ Tu vas devoir saisir ces informations toi-même... 😢'),
       ]
       spinnerPlace.fail(messages.join('\n'))
