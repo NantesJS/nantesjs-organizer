@@ -24,9 +24,9 @@ exports.ask = async () => {
   let addTalk = true
 
   do {
-    const talkIds = talks.map(talk => talk.id)
+    const excludedTalkIds = talks.map(talk => talk.id)
 
-    const { talk } = await getTalkQuestion(talkIds).then(prompts)
+    const { talk } = await getTalkQuestion(excludedTalkIds).then(prompts)
     talks.push(talk)
 
     const addTalkAnswer = await prompts(addTalkQuestion)
