@@ -1,11 +1,12 @@
-const startOfMonth = require('date-fns/start_of_month')
-const setDay = require('date-fns/set_day')
-const getDay = require('date-fns/get_day')
-const addWeeks = require('date-fns/add_weeks')
+const startOfMonth = require('date-fns/startOfMonth')
+const setDay = require('date-fns/setDay')
+const getDay = require('date-fns/getDay')
+const addWeeks = require('date-fns/addWeeks')
 const format = require('date-fns/format')
-const isValid = require('date-fns/is_valid')
-const isBefore = require('date-fns/is_before')
-const addMonths = require('date-fns/add_months')
+const isValid = require('date-fns/isValid')
+const isBefore = require('date-fns/isBefore')
+const addMonths = require('date-fns/addMonths')
+const parseISO = require('date-fns/parseISO')
 
 function getNextThirdThursdayOfMonth(date = new Date()) {
   const THURSDAY = 4
@@ -23,7 +24,7 @@ function getNextThirdThursdayOfMonth(date = new Date()) {
     return getNextThirdThursdayOfMonth(nextMonth)
   }
 
-  return format(thirdThursday, 'YYYY-MM-DD')
+  return format(thirdThursday, 'yyyy-MM-dd')
 }
 
 exports.getNextThirdThursdayOfMonth = getNextThirdThursdayOfMonth
@@ -40,4 +41,4 @@ exports.isValid = (date, today = new Date()) => {
   }
 }
 
-exports.format = date => format(date, 'DD/MM/YYYY')
+exports.format = date => format(parseISO(date), 'dd/MM/yyyy')
