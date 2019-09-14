@@ -35,7 +35,7 @@
     "lodash": "^4.17.11",
     "ora": "^3.4.0",
     "prompts": "^2.0.3",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
