@@ -4,8 +4,8 @@ const {
 } = require('../cfp')
 const { yellow } = require('kleur')
 
-function rejectTalkById(id) {
-  return talks => talks.filter(talk => talk.id !== id)
+function rejectTalkById(ids) {
+  return talks => talks.filter(talk => !ids.includes(talk.id))
 }
 
 function getChoices(talks) {
@@ -15,9 +15,9 @@ function getChoices(talks) {
   }))
 }
 
-exports.getTalkQuestion = async rejectedTalkId => {
+exports.getTalkQuestion = async (rejectedTalkIds = []) => {
   const talks = await getEventSubmittedTalksTitleWithId()
-    .then(rejectTalkById(rejectedTalkId))
+    .then(rejectTalkById(rejectedTalkIds))
 
   return {
     type: 'select',
@@ -26,4 +26,10 @@ exports.getTalkQuestion = async rejectedTalkId => {
     choices: getChoices(talks),
     format: getEventTalkById,
   }
+}
+
+exports.addTalkQuestion = {
+  type: 'confirm',
+  name: 'addTalk',
+  message: 'Souhaitez-vous ajouter un talk ?',
 }

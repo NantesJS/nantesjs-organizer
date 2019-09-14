@@ -1,4 +1,4 @@
-const { getTalkQuestion } = require('./talk')
+const { getTalkQuestion, addTalkQuestion } = require('./talk')
 const { getEventSubmittedTalksTitleWithId } = require('../cfp')
 
 describe('talk', () => {
@@ -12,6 +12,14 @@ describe('talk', () => {
         type: 'select',
         name: 'talk',
         message: 'Choisissez un talk',
+      }))
+    })
+
+    it('should ask for confirmation', async () => {
+      expect(addTalkQuestion).toEqual(expect.objectContaining({
+        type: 'confirm',
+        name: 'addTalk',
+        message: 'Souhaitez-vous ajouter un talk ?',
       }))
     })
 
@@ -29,11 +37,26 @@ describe('talk', () => {
       const talks = mockTalks()
       const firstTalk = talks[0]
 
-      const question = await getTalkQuestion(firstTalk.id)
+      const question = await getTalkQuestion([firstTalk.id])
 
       expect(question).toEqual(expect.objectContaining({
         choices: expect.not.arrayContaining([
           toChoice(firstTalk),
+        ]),
+      }))
+    })
+
+    it('should exclude first and second talk from choices', async () => {
+      const talks = mockTalks()
+      const firstTalk = talks[0]
+      const secondTalk = talks[1]
+
+      const question = await getTalkQuestion([firstTalk.id, secondTalk.id])
+
+      expect(question).toEqual(expect.objectContaining({
+        choices: expect.not.arrayContaining([
+          toChoice(firstTalk),
+          toChoice(secondTalk),
         ]),
       }))
     })
