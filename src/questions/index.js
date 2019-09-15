@@ -6,15 +6,17 @@ const { getSponsor, getHost } = require('./sponsorOrHost')
 const { getTalkQuestion, addTalkQuestion } = require('./talk')
 const { speakerQuestions } = require('./speaker')
 const { createVenue } = require('../venue')
+const { saveContact } = require('../database')
 
 exports.ask = async () => {
   const basics = await prompts(basicQuestions)
-  const sponsor = await getSponsor(prompts)
-  const venue = await getHost(prompts)
 
-  if (venue) {
-    venue.id = await createVenue(venue)
-  }
+  const sponsor = await getSponsor(prompts)
+    .then(saveContact)
+
+  const venue = await getHost(prompts)
+    .then(saveContact)
+    .then(createVenue)
 
   const talks = []
   let addTalk = true
@@ -30,13 +32,10 @@ exports.ask = async () => {
   } while (addTalk)
 
   return {
-    ...basics,
     id: uuid(),
+    ...basics,
     venue,
-    sponsor: {
-      ...sponsor,
-      id: uuid(),
-    },
+    sponsor,
     talks,
   }
 }

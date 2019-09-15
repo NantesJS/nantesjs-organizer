@@ -34,6 +34,15 @@ https://www.eventbrite.fr/platform/api-keys/
 
 Celle-ci doit-être utilisable à partir de la variable d'environnement `EVENTBRITE_API_KEY`.
 
+### Firestore :fire: (Optionnel)
+
+Vous devez créer un projet [Firebase](https://firebase.google.com/) et [générer une clé privée pour votre compte de service](https://firebase.google.com/docs/admin/setup#initialize_the_sdk).
+
+Une fois la clé privée téléchargée, vous devez l'enregistrer à la racine du projet sous le nom suivant : `serviceAccountKey.json`.
+
+:warning: Ce fichier doit rester secret !  
+:see_no_evil: C'est pour cela qu'il est ignoré par *git* grâce au fichier `.gitignore`.
+
 ## Docker :whale:
 
 ### Construit l'image

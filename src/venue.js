@@ -16,7 +16,7 @@ exports.createVenue = venue => {
     .then(userId => api.organizations.getByUser(userId))
     .then(getOr('', 'organizations[0].id'))
     .then(makeNewVenue(venue))
-    .then(({ id }) => String(id))
+    .then(() => venue)
     .then(returnDataAndStopSpinner(spinnerVenue))
     .catch(({ parsedError }) => {
       const { error, description } = parsedError
