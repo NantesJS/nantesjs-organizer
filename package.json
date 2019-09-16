@@ -29,18 +29,18 @@
     "dotenv": "^8.1.0",
     "emoji-strip": "^1.0.1",
     "eventbrite": "^1.2.1",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.2.0",
     "httpie": "^1.1.0",
     "kleur": "^3.0.3",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "ora": "^3.4.0",
     "prompts": "^2.0.3",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "coveralls": "^3.0.2",
-    "cross-env": "^5.2.0",
-    "jest": "^24.1.0",
+    "coveralls": "^3.0.6",
+    "cross-env": "^5.2.1",
+    "jest": "^24.9.0",
     "nock": "^11.3.4"
   },
   "engines": {

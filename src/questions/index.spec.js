@@ -13,7 +13,9 @@ describe('Questions', () => {
       sponsorName,
       hostName,
       'talk1',
+      true,
       'talk2',
+      false,
     ])
   })
 
