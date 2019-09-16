@@ -14,7 +14,9 @@ describe('Questions', () => {
       hostName,
       'https://www.clever-age.com',
       'talk1',
+      true,
       'talk2',
+      false,
     ])
   })
 
