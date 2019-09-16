@@ -3,7 +3,7 @@ const serviceAccount = require('../serviceAccountKey.json')
 const { yellow, green, red } = require('kleur')
 const { spinner, returnDataAndStopSpinner } = require('./spinner')
 
-let firebaseEnabled = 'FIREBASE_DATABASE_URL' in process.env
+const firebaseEnabled = 'FIREBASE_DATABASE_URL' in process.env
 
 exports.FIREBASE_ENABLED = firebaseEnabled
 
