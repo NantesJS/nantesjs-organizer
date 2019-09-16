@@ -1,6 +1,6 @@
 const admin = require('firebase-admin')
-const serviceAccount = require('../serviceAccountKey.json')
 const { yellow, green, red } = require('kleur')
+const addDays = require('date-fns/addDays')
 const { spinner, returnDataAndStopSpinner } = require('./spinner')
 
 const firebaseEnabled = 'FIREBASE_DATABASE_URL' in process.env
@@ -8,6 +8,8 @@ const firebaseEnabled = 'FIREBASE_DATABASE_URL' in process.env
 exports.FIREBASE_ENABLED = firebaseEnabled
 
 if (firebaseEnabled) {
+  const serviceAccount = require('../serviceAccountKey.json')
+
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: process.env.FIREBASE_DATABASE_URL,
@@ -41,10 +43,15 @@ exports.saveContact = async contact => {
 
   const spinnerSave = spinner(yellow('Ecriture du contact dans Firestore...')).start()
 
+  const expiresAt = addDays(new Date(), 30).toISOString()
+
   return admin.firestore()
     .collection('contacts')
     .doc(contact.id)
-    .set(contact)
+    .set({
+      ...contact,
+      expiresAt,
+    })
     .then(() => {
       spinnerSave.succeed(green('🗃  Le contact a bien été sauvé dans Firestore'))
 
@@ -64,14 +71,10 @@ exports.getContacts = async () => {
     .collection('contacts')
     .get()
     .then(snapshot => {
-      const docs = []
-      snapshot.forEach(doc => {
-        docs.push({
-          ...doc.data(),
-          id: doc.id,
-        })
-      })
-      return docs
+      return snapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id,
+      }))
     })
     .then(returnDataAndStopSpinner(spinnerGet))
     .catch(error => {

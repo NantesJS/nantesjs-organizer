@@ -1,4 +1,5 @@
 const getOr = require('lodash/fp/getOr')
+const isAfter = require('date-fns/isAfter')
 const { isNotEmpty } = require('./validators')
 const { findPlaceInNantes } = require('../places')
 const {
@@ -17,9 +18,13 @@ function getContact(sponsorOrHost = 'sponsor') {
     return prompts => getSponsorOrHost(sponsorOrHost)
       .then(prompts)
       .then(({ contact }) => {
-        if (contact) return contact
+        if (!contact) return getContactByName(sponsorOrHost)(prompts)
 
-        return getContactByName(sponsorOrHost)(prompts)
+        if (isAfter(new Date(), new Date(contact.expiresAt))) {
+          return findPlaceInNantes(contact.name).then(saveContact)
+        }
+
+        return contact
       })
   }
 
