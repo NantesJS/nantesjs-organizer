@@ -62,3 +62,6 @@ typings/
 
 # Ignore les fichiers markdown générés par l'outil
 meetup-*.md
+
+# Ignore les credentials firebase
+serviceAccountKey.json

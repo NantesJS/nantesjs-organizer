@@ -5,8 +5,10 @@ const { ask } = require('./questions')
 const { generateMarkdown } = require('./template')
 const { createEvent } = require('./event')
 const { spinner } = require('./spinner')
+const { saveEvent } = require('./database')
 
 ask()
+  .then(saveEvent)
   .then(createEvent)
   .then(meetup => ([
     `meetup-${meetup.id}.md`,
