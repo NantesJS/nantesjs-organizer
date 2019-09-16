@@ -71,14 +71,10 @@ exports.getContacts = async () => {
     .collection('contacts')
     .get()
     .then(snapshot => {
-      const docs = []
-      snapshot.forEach(doc => {
-        docs.push({
-          ...doc.data(),
-          id: doc.id,
-        })
-      })
-      return docs
+      return snapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id,
+      }))
     })
     .then(returnDataAndStopSpinner(spinnerGet))
     .catch(error => {
