@@ -3,16 +3,15 @@ const { ask } = require('./index')
 const { findPlaceInNantes } = require('../places')
 
 describe('Questions', () => {
+  const sponsorName = 'My Money Bank'
   const hostName = 'Clever Age'
 
   beforeEach(() => {
     prompts.inject([
       37,
       '2019-02-21',
-      'My Money Bank',
-      'https://www.mymoneybank.fr',
+      sponsorName,
       hostName,
-      'https://www.clever-age.com',
       'talk1',
       true,
       'talk2',
@@ -34,11 +33,11 @@ describe('Questions', () => {
         name: 'Clever Age',
         link: 'https://www.clever-age.com',
       }),
-      sponsor: {
+      sponsor: expect.objectContaining({
         id: expect.any(String),
         name: 'My Money Bank',
         link: 'https://www.mymoneybank.fr',
-      },
+      }),
       talks: [{
         id: 'talk1',
         title: 'Machine Learning driven user-experiences made easy with Guess.js',
@@ -68,15 +67,33 @@ describe('Questions', () => {
 
     expect(findPlaceInNantes).toHaveBeenCalledWith(hostName)
   })
+
+  it('should look for the sponsor coordinates', async () => {
+    expect.assertions(1)
+
+    await ask(prompts)
+
+    expect(findPlaceInNantes).toHaveBeenCalledWith(sponsorName)
+  })
 })
 
 jest.mock('../places.js', () => ({
-  findPlaceInNantes: jest.fn().mockResolvedValue({
+  findPlaceInNantes: jest.fn().mockResolvedValueOnce({
     lat: 0,
     lng: 0,
     city: '',
     postal_code: '',
     address: '',
+    name: 'My Money Bank',
+    link: 'https://www.mymoneybank.fr',
+  }).mockResolvedValueOnce({
+    lat: 0,
+    lng: 0,
+    city: '',
+    postal_code: '',
+    address: '',
+    name: 'Clever Age',
+    link: 'https://www.clever-age.com',
   }),
 }))
 
