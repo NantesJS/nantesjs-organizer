@@ -1,9 +1,11 @@
 const admin = require('firebase-admin')
 const serviceAccount = require('../serviceAccountKey.json')
 const { yellow, green, red } = require('kleur')
-const { spinner } = require('./spinner')
+const { spinner, returnDataAndStopSpinner } = require('./spinner')
 
-let firebaseEnabled = 'FIREBASE_DATABASE_URL' in process.env
+const firebaseEnabled = 'FIREBASE_DATABASE_URL' in process.env
+
+exports.FIREBASE_ENABLED = firebaseEnabled
 
 if (firebaseEnabled) {
   admin.initializeApp({
@@ -22,15 +24,12 @@ exports.saveEvent = async event => {
 
   return admin.firestore()
     .collection('events')
-    .add(event)
-    .then(doc => doc.id)
-    .then(id => {
+    .doc(event.id)
+    .set(event)
+    .then(() => {
       spinnerSave.succeed(green('🎉 L\'évènement a bien été sauvé dans Firestore'))
 
-      return {
-        ...event,
-        id,
-      }
+      return event
     })
     .catch(error => {
       spinnerSave.fail(red(`Une erreur est survenue lors de la sauvegarde dans firestore : ${error}`))
@@ -44,17 +43,58 @@ exports.saveContact = async contact => {
 
   return admin.firestore()
     .collection('contacts')
-    .add(contact)
-    .then(doc => doc.id)
-    .then(id => {
+    .doc(contact.id)
+    .set(contact)
+    .then(() => {
       spinnerSave.succeed(green('🗃  Le contact a bien été sauvé dans Firestore'))
 
-      return {
-        ...contact,
-        id,
-      }
+      return contact
     })
     .catch(error => {
       spinnerSave.fail(red(`Une erreur est survenue lors de la sauvegarde dans firestore : ${error}`))
+    })
+}
+
+exports.getContacts = async () => {
+  if (!firebaseEnabled) return
+
+  const spinnerGet = spinner(yellow('Récupération des contacts dans Firestore...')).start()
+
+  return admin.firestore()
+    .collection('contacts')
+    .get()
+    .then(snapshot => {
+      const docs = []
+      snapshot.forEach(doc => {
+        docs.push({
+          ...doc.data(),
+          id: doc.id,
+        })
+      })
+      return docs
+    })
+    .then(returnDataAndStopSpinner(spinnerGet))
+    .catch(error => {
+      spinnerGet.fail(red(`Une erreur est survenue lors de la récupération dans firestore : ${error}`))
+    })
+}
+
+exports.getContactById = async id => {
+  if (!firebaseEnabled) return
+
+  const spinnerGet = spinner(yellow('Récupération du contact dans Firestore...')).start()
+
+  return admin.firestore()
+    .collection('contacts')
+    .doc(id)
+    .get()
+    .then(doc => {
+      if (!doc.exists) throw Error(`Le contact ${id} est introuvable.`)
+
+      return doc.data()
+    })
+    .then(returnDataAndStopSpinner(spinnerGet))
+    .catch(error => {
+      spinnerGet.fail(red(`Une erreur est survenue lors de la récupération dans firestore : ${error}`))
     })
 }

@@ -10,13 +10,8 @@ const { saveContact } = require('../database')
 
 exports.ask = async () => {
   const basics = await prompts(basicQuestions)
-
   const sponsor = await getSponsor(prompts)
-    .then(saveContact)
-
-  const venue = await getHost(prompts)
-    .then(saveContact)
-    .then(createVenue)
+  const venue = await getHost(prompts).then(createVenue)
 
   const talks = []
   let addTalk = true

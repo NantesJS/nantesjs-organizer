@@ -1,33 +1,70 @@
 const getOr = require('lodash/fp/getOr')
-const flow = require('lodash/flow')
-const uuid = require('uuid/v4')
 const { isNotEmpty } = require('./validators')
 const { findPlaceInNantes } = require('../places')
+const {
+  FIREBASE_ENABLED,
+  getContacts,
+  getContactById,
+  saveContact,
+} = require('../database')
 
-function getSponsorOrHostName(sponsorOrHost = 'sponsor') {
-  return {
+exports.getSponsor = getContact('sponsor')
+
+exports.getHost = getContact('hébergeur')
+
+function getContact(sponsorOrHost = 'sponsor') {
+  if (FIREBASE_ENABLED) {
+    return prompts => getSponsorOrHost(sponsorOrHost)
+      .then(prompts)
+      .then(({ contact }) => {
+        if (contact) return contact
+
+        return getContactByName(sponsorOrHost)(prompts)
+      })
+  }
+
+  return getContactByName(sponsorOrHost)
+}
+
+function getContactByName(sponsorOrHost = 'sponsor') {
+  const question = {
     type: 'text',
     name: 'name',
     message: `Quel est le nom de votre ${sponsorOrHost} ?`,
     validate: isNotEmpty,
   }
+
+  return prompts => prompts(question)
+    .then(getOr('', 'name'))
+    .then(findPlaceInNantes)
+    .then(saveContact)
 }
 
-const getPlaceDetails = flow(getOr('', 'name'), findPlaceInNantes)
+async function getSponsorOrHost(sponsorOrHost = 'sponsor') {
+  const NEW = -1
 
-exports.getSponsor = async prompts =>
-  prompts(getSponsorOrHostName('sponsor'))
-    .then(getPlaceDetails)
-    .then(addIdIfAbsent)
+  const choices = await getContactChoices().then(contacts => [
+    ...contacts,
+    {
+      title: 'NOUVEAU CONTACT',
+      value: NEW,
+    },
+  ])
 
-exports.getHost = async prompts =>
-  prompts(getSponsorOrHostName('hébergeur'))
-    .then(getPlaceDetails)
-    .then(addIdIfAbsent)
-
-function addIdIfAbsent(obj = {}) {
   return {
-    id: uuid(),
-    ...obj,
+    type: 'autocomplete',
+    name: 'contact',
+    message: `Quel est votre ${sponsorOrHost} ?`,
+    choices,
+    format: id => (id === NEW) ? undefined : getContactById(id),
   }
+}
+
+function getContactChoices() {
+  return getContacts().then(contacts => {
+    return contacts.map(contact => ({
+      title: contact.name,
+      value: contact.id,
+    }))
+  })
 }
