@@ -35,7 +35,7 @@
     "kleur": "^3.0.3",
     "lodash": "^4.17.15",
     "ora": "^3.4.0",
-    "prompts": "^2.0.3",
+    "prompts": "^2.2.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
