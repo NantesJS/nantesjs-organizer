@@ -29,7 +29,7 @@
     "dotenv": "^8.1.0",
     "emoji-strip": "^1.0.1",
     "eventbrite": "^1.2.1",
-    "firebase-admin": "^8.5.0",
+    "firebase-admin": "^8.6.0",
     "handlebars": "^4.2.0",
     "httpie": "^1.1.0",
     "kleur": "^3.0.3",
