@@ -31,7 +31,7 @@
     "eventbrite": "^1.2.1",
     "firebase-admin": "^8.5.0",
     "handlebars": "^4.2.0",
-    "httpie": "^1.1.0",
+    "httpie": "^1.1.2",
     "kleur": "^3.0.3",
     "lodash": "^4.17.15",
     "ora": "^3.4.0",
