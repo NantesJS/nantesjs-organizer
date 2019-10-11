@@ -39,7 +39,7 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "coveralls": "^3.0.6",
+    "coveralls": "^3.0.7",
     "cross-env": "^6.0.3",
     "jest": "^24.9.0",
     "nock": "^11.4.0"
