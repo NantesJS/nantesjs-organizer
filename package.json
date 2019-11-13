@@ -28,7 +28,7 @@
     "date-fns": "^2.4.1",
     "dotenv": "^8.2.0",
     "emoji-strip": "^1.0.1",
-    "eventbrite": "^1.2.1",
+    "eventbrite": "^1.2.2",
     "firebase-admin": "^8.6.0",
     "handlebars": "^4.4.3",
     "httpie": "^1.1.2",
