@@ -30,7 +30,7 @@
     "emoji-strip": "^1.0.1",
     "eventbrite": "^1.2.2",
     "firebase-admin": "^8.7.0",
-    "handlebars": "^4.5.1",
+    "handlebars": "^4.5.2",
     "httpie": "^1.1.2",
     "kleur": "^3.0.3",
     "lodash": "^4.17.15",
