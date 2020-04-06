@@ -41,7 +41,7 @@
   "devDependencies": {
     "coveralls": "^3.0.11",
     "cross-env": "^7.0.2",
-    "jest": "^25.2.6",
+    "jest": "^25.2.7",
     "nock": "^12.0.3"
   },
   "engines": {
