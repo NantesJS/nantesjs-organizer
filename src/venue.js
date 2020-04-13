@@ -18,7 +18,7 @@ exports.createVenue = venue => {
     .then(makeNewVenue(venue))
     .then(newVenue => ({
       ...venue,
-      id: newVenue.id,
+      id: String(newVenue.id),
     }))
     .then(returnDataAndStopSpinner(spinnerVenue))
     .catch(({ parsedError }) => {
