@@ -8,28 +8,28 @@ date: '{{date}}'
 image: NOT_IMPLEMENTED_YET
 ticketsUrl: {{ticketsUrl}}
 venue:
-  id: {{venue.id}}
+  id: '{{venue.id}}'
   name: '{{venue.name}}'
   link: '{{venue.link}}'
-  postal_code: {{venue.postal_code}}
+  postal_code: '{{venue.postal_code}}'
   address: {{venue.address}}
   city: {{venue.city}}
   latitude: {{venue.lat}}
   longitude: {{venue.lng}}
 sponsor:
-    id: {{sponsor.id}}
+    id: '{{sponsor.id}}'
     name: '{{sponsor.name}}'
     link: '{{sponsor.link}}'
 talks:
   {{#each talks}}
   -
-    id: {{id}}
+    id: '{{id}}'
     title: '{{title}}'
     description: '{{description}}'
     speakers:
     {{#each speakers}}
       -
-          id: {{id}}
+          id: '{{id}}'
           name: '{{name}}'
           link: '{{link}}'
     {{/each}}

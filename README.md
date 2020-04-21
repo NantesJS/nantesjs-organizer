@@ -43,6 +43,18 @@ Une fois la clé privée téléchargée, vous devez l'enregistrer à la racine d
 :warning: Ce fichier doit rester secret !  
 :see_no_evil: C'est pour cela qu'il est ignoré par *git* grâce au fichier `.gitignore`.
 
+### GitHub :octocat:
+
+Vous devez créer un token pour pouvoir utiliser l'API GitHub et créer la Pull Request.
+
+https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
+
+Les variables d'environnement suivantes doivent-être renseignées :
+
+* `GITHUB_TOKEN`
+* `GITHUB_WEBSITE_ORGA`
+* `GITHUB_WEBSITE`
+
 ## Docker :whale:
 
 ### Construit l'image
