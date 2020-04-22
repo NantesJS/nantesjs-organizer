@@ -1,5 +1,5 @@
 const prompts = require('prompts')
-const uuid = require('uuid/v4')
+const { v4: uuid } = require('uuid')
 const { bold, red } = require('kleur')
 const { basicQuestions } = require('./basic')
 const { getSponsor, getHost } = require('./sponsorOrHost')
