@@ -25,7 +25,7 @@
   "homepage": "https://github.com/NantesJS/nantesjs-organizer#readme",
   "dependencies": {
     "@google/maps": "^1.1.3",
-    "@octokit/rest": "^17.7.0",
+    "@octokit/rest": "^17.8.0",
     "date-fns": "^2.13.0",
     "dotenv": "^8.2.0",
     "emoji-strip": "^1.0.1",
