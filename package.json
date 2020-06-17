@@ -33,7 +33,7 @@
     "firebase-admin": "^8.12.1",
     "handlebars": "^4.7.6",
     "httpie": "^1.1.2",
-    "kleur": "^3.0.3",
+    "kleur": "^4.0.0",
     "lodash": "^4.17.15",
     "ora": "^4.0.4",
     "prompts": "^2.3.2",
