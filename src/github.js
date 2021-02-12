@@ -18,7 +18,7 @@ const GITHUB_VARIABLES = [
 
 const ENV_VARIABLES = Object.keys(process.env)
 
-const GITHUB_ENABLED = ENV_VARIABLES.includes(GITHUB_VARIABLES)
+const GITHUB_ENABLED = GITHUB_VARIABLES.every(envVar => ENV_VARIABLES.includes(envVar))
 
 exports.GITHUB_ENABLED = GITHUB_ENABLED
 
@@ -53,7 +53,7 @@ function getLastMeetup() {
 
   const spinnerGitHub = spinner(yellow('⏳ Récupération du dernier meetup sur GitHub...')).start()
 
-  return client.repos.getContents({
+  return client.repos.getContent({
     ...COMMON_PAYLOAD,
     path: MEETUPS_PATH,
   }).then(contents => {
