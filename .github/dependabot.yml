@@ -1,0 +1,31 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: date-fns
+    versions:
+    - 2.16.1
+    - 2.20.0
+    - 2.20.1
+    - 2.20.2
+    - 2.20.3
+    - 2.21.0
+  - dependency-name: firebase-admin
+    versions:
+    - 9.6.0
+  - dependency-name: "@octokit/rest"
+    versions:
+    - 18.0.15
+    - 18.1.1
+    - 18.3.4
+    - 18.4.0
+    - 18.5.0
+    - 18.5.2
+  - dependency-name: nock
+    versions:
+    - 13.0.6
